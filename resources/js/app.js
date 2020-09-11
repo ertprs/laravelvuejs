@@ -19,6 +19,10 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+window.Vue.use(ElementUI);
 
 Vue.component('app-component', require('./components/AppComponent.vue').default);
 

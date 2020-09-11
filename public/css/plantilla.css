@@ -30,3 +30,14 @@
     transform: translateX(-10px);
     opacity: 0;
 }
+
+.btnWidth{
+    width:49%!important;
+}
+.el-select{
+    width: 100%!important;
+}
+
+.user-block{
+    list-style: none;
+}
