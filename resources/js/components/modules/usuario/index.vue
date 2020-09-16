@@ -16,7 +16,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info btn-sm" :to="'/'">
+            <router-link class="btn btn-info btn-sm" :to="'/usuario/crear'">
               <i class="fas fa-plus-square"></i> Nuevo usuario
             </router-link>
           </div>
@@ -34,7 +34,7 @@
                       <div class="form-group row">
                         <label for class="col-md-3 col-form-label">Nombre</label>
                         <div class="col-md-9">
-                          <input type="text" name id class="form-control" v-model="fillBusqUsuario.cNombre"/>
+                          <input type="text" name id class="form-control" v-model="fillBusqUsuario.cNombre" @keyup.enter="getListarUsuario"/>
                         </div>
                       </div>
                     </div>
@@ -42,7 +42,7 @@
                       <div class="form-group row">
                         <label for class="col-md-3 col-form-label">Usuario</label>
                         <div class="col-md-9">
-                          <input type="text" name id class="form-control" v-model="fillBusqUsuario.cUsuario" />
+                          <input type="text" name id class="form-control" v-model="fillBusqUsuario.cUsuario" @keyup.enter="getListarUsuario" />
                         </div>
                       </div>
                     </div>
@@ -50,7 +50,7 @@
                       <div class="form-group row">
                         <label for class="col-md-3 col-form-label">Correo electronico</label>
                         <div class="col-md-9">
-                          <input type="email" name id class="form-control" v-model="fillBusqUsuario.cCorreo"/>
+                          <input type="email" name id class="form-control" v-model="fillBusqUsuario.cCorreo" @keyup.enter="getListarUsuario"/>
                         </div>
                       </div>
                     </div>
@@ -75,7 +75,7 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarUsuario">Buscar</button>
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarUsuario"  v-loading.fullscreen.lock="fullscreenLoading">Buscar</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBusq">Limpiar</button>
                   </div>
                 </div>
@@ -174,6 +174,7 @@ export default {
         cCorreo:'',
         cEstado:''
       },
+      fullscreenLoading:false,
       listUsuario:[],
       listEstado:[
         {value:'A', label:'Activo'},
@@ -222,6 +223,7 @@ export default {
       this.listUsuario=[]
     },
     getListarUsuario(){
+      this.fullscreenLoading = true;
       var url = '/administracion/usuario/getListarUsuarios';
       axios.get(url, {
         params:{
@@ -232,8 +234,10 @@ export default {
         }
       })
       .then(response => {
+        this.inicializarPaginacion()
         console.log(response.data)
         this.listUsuario = response.data
+        this.fullscreenLoading = false;
       })
     },
     nextPage(){
@@ -244,6 +248,9 @@ export default {
     },
     selectPage(page){
       this.pageNumber = page;
+    },
+    inicializarPaginacion(){
+      this.pageNumber = 0;
     }
   }
 };
