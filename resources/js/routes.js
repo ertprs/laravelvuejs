@@ -14,6 +14,7 @@ export default new Router({
         {path:'/rol', component: require('./components/modules/rol/index').default},
         {path:'/usuario', component: require('./components/modules/usuario/index').default},
         {path:'/usuario/crear', component: require('./components/modules/usuario/create').default},
+        {path:'/usuario/editar/:id', name:'usuario.editar', props:true, component: require('./components/modules/usuario/edit').default},
         {path:'/permiso', component: require('./components/modules/permiso/index').default},
     ],
     mode:'history',

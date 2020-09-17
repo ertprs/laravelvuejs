@@ -24,6 +24,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 window.Vue.use(ElementUI);
 
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
 Vue.component('app-component', require('./components/AppComponent.vue').default);
 
 /**
