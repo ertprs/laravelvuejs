@@ -126,7 +126,7 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="'/'">
+                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'usuario.ver', params:{id:item.id}}">
                             <i class="fas fa-folder"></i> Ver
                           </router-link>
                           <template v-if="item.state == 'A'">
@@ -136,14 +136,11 @@
                             <router-link class="btn btn-flat btn-success btn-sm" :to="'/'">
                               <i class="fas fa-key"></i> Permisos
                             </router-link>
-                            <router-link class="btn btn-flat btn-danger btn-sm" :to="'/'">
-                              <i class="fas fa-trash"></i> Desactivar
-                            </router-link>
+                            <button  class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoUsuario(1, item.id)">
+                              <i class="fas fa-trash"></i> Desactivar</button>
                           </template>
                           <template v-else>
-                            <router-link class="btn btn-flat btn-success btn-sm" :to="'/'">
-                              <i class="fas fa-check"></i> Activar
-                            </router-link>
+                            <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoUsuario(2, item.id)"><i class="fas fa-check"></i> Activar</button>
                           </template>
                          
                         </td>
@@ -264,6 +261,34 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
+    },
+    setCambiarEstadoUsuario(op, id){
+      Swal.fire({
+        title: 'Esta seguro de ' + ((op == 1) ?  'desactivar' : 'activar') + ' el usuario ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: ((op == 1) ?  'Si, desactivar' : 'Si, activar')
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.fullscreenLoading= true;
+          var url = '/administracion/usuario/setCambiarEstadoUsuario';
+          axios.post(url, {
+            'nIdUsuario' : id,
+            'cEstado'    : (op == 1) ? 'I' : 'A'
+          })
+          .then(response => {
+            Swal.fire({
+            icon: 'success',
+            title: 'Se ' + ((op == 1) ?  'desactivo' : 'activo') + ' el usuario',
+            showConfirmButton: false,
+            timer: 1500
+            })
+            this.getListarUsuario();
+          })
+        }
+      })
     }
   }
 };
