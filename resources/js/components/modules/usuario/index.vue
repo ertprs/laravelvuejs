@@ -245,7 +245,7 @@ export default {
       })
       .then(response => {
         this.inicializarPaginacion()
-        console.log(response.data)
+        console.log(response)
         this.listUsuario = response.data
         this.fullscreenLoading = false;
       })

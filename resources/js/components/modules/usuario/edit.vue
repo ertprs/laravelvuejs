@@ -210,13 +210,13 @@ export default {
         })
         .then((response) => {
          
-          console.log(response.data);
+          console.log(response);
           this.fillEditarUsuario.cPrimerNombre  = response.data[0].firstname;
           this.fillEditarUsuario.cSegundoNombre = response.data[0].secondname;
           this.fillEditarUsuario.cApellido      = response.data[0].lastname;
           this.fillEditarUsuario.cUsuario       = response.data[0].username;
           this.fillEditarUsuario.cCorreo        = response.data[0].email;
-        this.fullscreenLoading = false;
+          this.fullscreenLoading = false; 
         
         });
     },
@@ -275,7 +275,7 @@ export default {
           'oFotografia'     : nIdFile,
         })
         .then((response) => {
-          
+          conosole.log(response)
           this.fullscreenLoading = false;
           Swal.fire({
             icon: 'success',
