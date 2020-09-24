@@ -20,21 +20,13 @@
             <div class="card-body box-profile">
               <div class="text-center">
                 <template v-if="!fillVerUsuario.cRutaArchivo">
-                    
-                        <img src="/img/avatar.png" :alt="fillVerUsuario.username" class="profile-user-img img-fluid img-circle">
-                    
-                    </template>
-                    <template v-else>
-                   
-                        <img :src="fillVerUsuario.cRutaArchivo" :alt="cNombreCompleto" class="profile-user-img img-fluid img-circle">
-                    
+                    <img src="/img/avatar.png" :alt="fillVerUsuario.username" class="profile-user-img img-fluid img-circle img-max-height">
                 </template>
-                          <!-- -->
-               
+                <template v-else>
+                    <img :src="fillVerUsuario.cRutaArchivo" :alt="cNombreCompleto" class="profile-user-img img-fluid img-circle img-max-height">
+                </template>
               </div>
-
               <h3 class="profile-username text-center">{{cNombreCompleto}}</h3>
-
               <p class="text-muted text-center">Vendedor</p>
             </div>
             <!-- /.card-body -->
@@ -44,7 +36,7 @@
           <!-- About Me Box -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">About Me</h3>
+              <h3 class="card-title">Sobre Mi</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -65,10 +57,10 @@
         <div class="col-md-8">
           <div class="card">
             <div class="card-header p-2">
-              <ul class="nav nav-pills">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#settings" data-toggle="tab">Settings</a>
-                </li>
+              <ul class="nav nav-pills position-reverse" >
+                <router-link class="nav-link active" :to="'/usuario'">
+                  <i class="fas fa-arrow-left"></i>Regresar
+                </router-link>
               </ul>
             </div>
             <!-- /.card-header -->
@@ -364,4 +356,10 @@ export default {
 </script>
 
 <style>
+  .position-reverse{
+    flex-direction: row-reverse!important;
+  }
+  .img-max-height{
+    max-height: 100%;
+  }
 </style>

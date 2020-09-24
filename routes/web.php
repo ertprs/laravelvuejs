@@ -17,6 +17,9 @@ Route::get('/administracion/usuario/getListarUsuarios', 'Administracion\UsersCon
 Route::post('/administracion/usuario/setRegistrarUsuario', 'Administracion\UsersController@setRegistrarUsuario');
 Route::post('/administracion/usuario/setEditarUsuario', 'Administracion\UsersController@setEditarUsuario');
 Route::post('/administracion/usuario/setCambiarEstadoUsuario', 'Administracion\UsersController@setCambiarEstadoUsuario');
+
+Route::get('/administracion/rol/getListarRoles', 'Administracion\RolesController@getListarRoles');
+
 Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
 
 Route::get('/{optional?}', function () {

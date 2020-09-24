@@ -35,7 +35,7 @@
           <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library-->
           <li class="nav-item has-treeview">
-            <router-link class="nav-link active" :to="'/'">
+            <router-link class="nav-link" :to="'/'">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </router-link>
