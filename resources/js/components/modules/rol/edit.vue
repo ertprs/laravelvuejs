@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear Roles</h1>
+            <h1 class="m-0 text-dark">Editar Roles</h1>
           </div>
           <!-- /.col -->    
         </div>
@@ -27,7 +27,7 @@
                   <div class="col-md-5">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registrar Rol</h3>
+                            <h3 class="card-title">Formulario Editar Rol</h3>
                         </div>
                         <div class="card-body">
                             <form role="form">
@@ -36,7 +36,7 @@
                                         <div class="form-group row">
                                             <label for class="col-md-3 col-form-label">Nombre</label>
                                             <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="fillCrearRol.cNombre" @keyup.enter="setRegistrarRolPermisos"/>
+                                            <input type="text" class="form-control" v-model="fillEditarRol.cNombre" @keyup.enter="setEditarRolPermisos"/>
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
                                         <div class="form-group row">
                                             <label for class="col-md-3 col-form-label">Url Amigable</label>
                                             <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="fillCrearRol.cSlug" @keyup.enter="setRegistrarRolPermisos"/>
+                                            <input type="text" class="form-control" v-model="fillEditarRol.cSlug" @keyup.enter="setEditarRolPermisos"/>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                               <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">Registar</button>
+                               <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
                                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                             </div>
                         </div>
@@ -123,7 +123,8 @@
 export default {
   data(){
     return{
-      fillCrearRol:{
+      fillEditarRol:{
+        nIdRol : this.$attrs.id,
         cNombre:'',
         cSlug:''
       },
@@ -146,21 +147,42 @@ export default {
   
   },
   mounted(){
+      this.getListarRoles();
       this.getListarPermisoByRol();
   },
   methods:{
     limpiarCriterios(){
-        this.fillCrearRol.cNombre   = '';
-        this.fillCrearRol.cSlug      = '';
+        this.fillEditarRol.cNombre   = '';
+        this.fillEditarRol.cSlug  = '';
         },
     abrirModal(){
           this.modalShow = !this.modalShow;
       },
+    getListarRoles(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/rol/getListarRoles';
+      axios.get(url, {
+        params:{
+          'nIdRol': this.fillEditarRol.nIdRol
+         
+        }
+      })
+      .then(response => {
+        
+        this.fillEditarRol.cNombre = response.data[0].name;
+        this.fillEditarRol.cSlug = response.data[0].slug;
+        this.fullscreenLoading = false;
+      })
+    },
     getListarPermisoByRol(){
           var ruta = '/administracion/rol/getListarPermisoByRol'
-          axios.get(ruta).then(response => {
+          axios.get(ruta, {
+            params:{
+              'nIdRol': this.fillEditarRol.nIdRol
+            }
+          }).then(response => {
               this.listPermisos = response.data;
-              this.filterPermisosByRol();
+              this.filterPermisosByRol()
           })
       },
     filterPermisosByRol(){
@@ -170,40 +192,47 @@ export default {
                 'id'        : x.id,
                 'name'      : x.name,
                 'slug'      : x.slug,
-                'checked'   : false
+                'checked'   : (x.checked == 1) ? true : false
             })
         })
     },
     marcarFila(index){
         this.listPermisosFilter[index].checked = !this.listPermisosFilter[index].checked;
     },
-    setRegistrarRolPermisos(){
+
+    setEditarRolPermisos(){
        
-        if(this.validarRegistrarRolPermisos()){
+        if(this.validarEditarRolPermisos()){
             this.modalShow = true;
             return;
         }
         this.fullscreenLoading = true;
-        var url = '/administracion/rol/setRegistrarRolPermisos';
+        var url = '/administracion/rol/setEditarRolPermisos';
         axios.post(url,{
-          'cNombre'             : this.fillCrearRol.cNombre,
-          'cSlug'               : this.fillCrearRol.cSlug,
+          'nIdRol'              : this.fillEditarRol.nIdRol,
+          'cNombre'             : this.fillEditarRol.cNombre,
+          'cSlug'               : this.fillEditarRol.cSlug,
           'listPermisosFilter'  : this.listPermisosFilter
 
         }).then(response => {
           console.log('Registro de usuario exitosamente')
           this.fullscreenLoading = false;
-          this.$router.push('/rol')
+          Swal.fire({
+            icon: 'success',
+            title: 'Se actualizo el rol correctamente',
+            showConfirmButton: false,
+            timer: 1500
+            })
         })
       },
-    validarRegistrarRolPermisos(){
+    validarEditarRolPermisos(){
           this.error = 0;
           this.mensajeError = [];
 
-          if(!this.fillCrearRol.cNombre){
+          if(!this.fillEditarRol.cNombre){
               this.mensajeError.push("El nombre es un campo obligatorio")
           }
-          if(!this.fillCrearRol.cSlug){
+          if(!this.fillEditarRol.cSlug){
               this.mensajeError.push("La Url Amigable es un campo obligatorio")
           }
           let contador = 0;
