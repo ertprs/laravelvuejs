@@ -4182,6 +4182,85 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4189,10 +4268,26 @@ __webpack_require__.r(__webpack_exports__);
         cNombre: '',
         cUrl: ''
       },
+      fillVerRol: {
+        cNombre: '',
+        cUrl: ''
+      },
       fullscreenLoading: false,
       listRoles: [],
+      listPermisos: [],
       pageNumber: 0,
-      perPage: 5
+      perPage: 5,
+      modalShow: false,
+      modalOption: 0,
+      mostrarModal: {
+        display: 'block',
+        background: '#0000006b'
+      },
+      ocultarModal: {
+        display: 'none'
+      },
+      error: 0,
+      mensajeError: []
     };
   },
   computed: {
@@ -4227,8 +4322,18 @@ __webpack_require__.r(__webpack_exports__);
     limpiarCriteriosBusq: function limpiarCriteriosBusq() {
       this.fillBusqRol.cNombre = '', this.fillBusqRol.cUrl = '';
     },
+    abrirModal: function abrirModal() {
+      this.modalShow = !this.modalShow;
+      this.limpiarModal();
+    },
     limpiarBandejaUsuarios: function limpiarBandejaUsuarios() {
       this.listRoles = [];
+    },
+    limpiarModal: function limpiarModal() {
+      this.fillVerRol.cNombre = '';
+      this.fillVerRol.cUrl = '';
+      this.listPermisos = [];
+      this.modalOption = 0;
     },
     getListarRoles: function getListarRoles() {
       var _this = this;
@@ -4259,6 +4364,45 @@ __webpack_require__.r(__webpack_exports__);
     },
     inicializarPaginacion: function inicializarPaginacion() {
       this.pageNumber = 0;
+    },
+    getListarPermisoByRol: function getListarPermisoByRol(id) {
+      var _this2 = this;
+
+      var ruta = '/administracion/rol/getListarPermisoByRol';
+      axios.get(ruta, {
+        params: {
+          'nIdRol': id
+        }
+      }).then(function (response) {
+        _this2.listPermisos = response.data;
+        _this2.modalShow = true;
+        _this2.modalOption = 2;
+      });
+    },
+    abrirModalByOption: function abrirModalByOption(modulo, accion, data) {
+      switch (modulo) {
+        case "rol":
+          {
+            switch (accion) {
+              case "ver":
+                {
+                  //setear la informacion del array
+                  this.fillVerRol.cNombre = data.name;
+                  this.fillVerRol.cUrl = data.slug; //obtener los permisos de los roles seleccionado
+
+                  this.getListarPermisoByRol(data.id);
+                }
+                break;
+
+              default:
+                break;
+            }
+          }
+          break;
+
+        default:
+          break;
+      }
     }
   }
 });
@@ -106220,7 +106364,10 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          {
+            staticClass: "modal-dialog modal-dialog-scrollable",
+            attrs: { role: "document" }
+          },
           [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header" }, [
@@ -106627,7 +106774,10 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          {
+            staticClass: "modal-dialog modal-dialog-scrollable",
+            attrs: { role: "document" }
+          },
           [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header" }, [
@@ -107006,14 +107156,18 @@ var render = function() {
                                     "td",
                                     [
                                       _c(
-                                        "router-link",
+                                        "button",
                                         {
                                           staticClass:
                                             "btn btn-flat btn-primary btn-sm",
-                                          attrs: {
-                                            to: {
-                                              name: "usuario.ver",
-                                              params: { id: item.id }
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.abrirModalByOption(
+                                                "rol",
+                                                "ver",
+                                                item
+                                              )
                                             }
                                           }
                                         },
@@ -107145,7 +107299,203 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        class: { show: _vm.modalShow },
+        style: _vm.modalShow ? _vm.mostrarModal : _vm.ocultarModal
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-scrollable",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Sistema Laravel y Vue")
+                ]),
+                _vm._v(" "),
+                _c("button", {
+                  staticClass: "close",
+                  on: { click: _vm.abrirModal }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                [
+                  _vm.modalOption == 1
+                    ? _vm._l(_vm.mensajeError, function(item, index) {
+                        return _c("div", {
+                          key: index,
+                          staticClass: "callout callout-danger",
+                          staticStyle: { padding: "5px" },
+                          domProps: { textContent: _vm._s(item) }
+                        })
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.modalOption == 2
+                    ? [
+                        _c("div", { staticClass: "container-fluid" }, [
+                          _c("div", { staticClass: "card card-info" }, [
+                            _vm._m(5),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "card-body" }, [
+                              _c("form", { attrs: { role: "form" } }, [
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-md-12" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-12 col-form-label",
+                                            attrs: { for: "" }
+                                          },
+                                          [_vm._v("Nombre")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "col-md-12" },
+                                          [
+                                            _c("span", {
+                                              staticClass: "from_control",
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  _vm.fillVerRol.cNombre
+                                                )
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-12" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-12 col-form-label",
+                                            attrs: { for: "" }
+                                          },
+                                          [_vm._v("Url Amigable")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "col-md-12" },
+                                          [
+                                            _c("span", {
+                                              staticClass: "from_control",
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  _vm.fillVerRol.cUrl
+                                                )
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                ])
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "card card-info" }, [
+                            _vm._m(6),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "card-body table-responsive" },
+                              [
+                                _vm.listPermisos.length
+                                  ? [
+                                      _c(
+                                        "table",
+                                        {
+                                          staticClass:
+                                            "table table-hover table-head-fixed text-nowrap projects"
+                                        },
+                                        [
+                                          _vm._m(7),
+                                          _vm._v(" "),
+                                          _c(
+                                            "tbody",
+                                            _vm._l(_vm.listPermisos, function(
+                                              item,
+                                              index
+                                            ) {
+                                              return _c("tr", { key: index }, [
+                                                _c("td", {
+                                                  domProps: {
+                                                    textContent: _vm._s(
+                                                      item.name
+                                                    )
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("td", {
+                                                  domProps: {
+                                                    textContent: _vm._s(
+                                                      item.slug
+                                                    )
+                                                  }
+                                                })
+                                              ])
+                                            }),
+                                            0
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  : [_vm._m(8)]
+                              ],
+                              2
+                            )
+                          ])
+                        ])
+                      ]
+                    : _vm._e()
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    on: { click: _vm.abrirModal }
+                  },
+                  [_vm._v("Cerrar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -107190,6 +107540,42 @@ var staticRenderFns = [
         _c("th", [_vm._v("Url Amigable")]),
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "callout callout-info" }, [
+      _c("h5", [_vm._v("No se encontraron resultados...")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("información del Rol")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Listado de Permisos")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Url Amigable")])
       ])
     ])
   },
