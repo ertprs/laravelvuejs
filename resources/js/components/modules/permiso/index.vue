@@ -16,7 +16,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info btn-sm" :to="'/rol/crear'">
+            <router-link class="btn btn-info btn-sm" :to="'/permiso/crear'">
               <i class="fas fa-plus-square"></i> Nuevo Permiso
             </router-link>
           </div>
@@ -42,7 +42,7 @@
                       <div class="form-group row">
                         <label for class="col-md-3 col-form-label">Url Amigable</label>
                         <div class="col-md-9">
-                          <input type="text" name id class="form-control" v-model="fillBusqPermiso.cUrl" @keyup.enter="getListarPermisos" />
+                          <input type="text" name id class="form-control" v-model="fillBusqPermiso.cSlug" @keyup.enter="getListarPermisos" />
                         </div>
                       </div>
                     </div>
@@ -128,7 +128,7 @@ export default {
     return{
       fillBusqPermiso:{
         cNombre:'',
-        cUrl:''
+        cSlug:''
       },
       fullscreenLoading:false,
       listPermisos:[],
@@ -166,7 +166,7 @@ export default {
   methods:{
     limpiarCriteriosBusq(){
       this.fillBusqPermiso.cNombre='',
-      this.fillBusqPermiso.cUrl=''
+      this.fillBusqPermiso.cSlug=''
     },
 
     getListarPermisos(){
@@ -175,7 +175,7 @@ export default {
       axios.get(url, {
         params:{
           'cNombre': this.fillBusqPermiso.cNombre,
-          'cUrl': this.fillBusqPermiso.cUrl,
+          'cSlug': this.fillBusqPermiso.cSlug,
          
         }
       })

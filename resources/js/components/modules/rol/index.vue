@@ -42,7 +42,7 @@
                       <div class="form-group row">
                         <label for class="col-md-3 col-form-label">Url Amigable</label>
                         <div class="col-md-9">
-                          <input type="text" name id class="form-control" v-model="fillBusqRol.cUrl" @keyup.enter="getListarRoles" />
+                          <input type="text" name id class="form-control" v-model="fillBusqRol.cSlug" @keyup.enter="getListarRoles" />
                         </div>
                       </div>
                     </div>
@@ -154,7 +154,7 @@
                                 <div class="form-group row">
                                   <label for class="col-md-12 col-form-label">Url Amigable</label>
                                   <div class="col-md-12">
-                                    <span class="from_control" v-text="fillVerRol.cUrl"></span>
+                                    <span class="from_control" v-text="fillVerRol.cSlug"></span>
                                   </div>
                                 </div>
                               </div>
@@ -208,11 +208,11 @@ export default {
     return{
       fillBusqRol:{
         cNombre:'',
-        cUrl:''
+        cSlug:''
       },
       fillVerRol:{
         cNombre:'',
-        cUrl:''
+        cSlug:''
       },
       fullscreenLoading:false,
       listRoles:[],
@@ -262,7 +262,7 @@ export default {
   methods:{
     limpiarCriteriosBusq(){
       this.fillBusqRol.cNombre='',
-      this.fillBusqRol.cUrl=''
+      this.fillBusqRol.cSlug=''
     },
     abrirModal(){
         this.modalShow = !this.modalShow;
@@ -273,7 +273,7 @@ export default {
     },
     limpiarModal(){
       this.fillVerRol.cNombre =  '';
-      this.fillVerRol.cUrl = '';
+      this.fillVerRol.cSlug = '';
       this.listPermisos = [];
       this.modalOption = 0;
     },
@@ -283,7 +283,7 @@ export default {
       axios.get(url, {
         params:{
           'cNombre': this.fillBusqRol.cNombre,
-          'cUrl': this.fillBusqRol.cUrl,
+          'cSlug': this.fillBusqRol.cSlug,
          
         }
       })
@@ -328,7 +328,7 @@ export default {
                 {
                   //setear la informacion del array
                   this.fillVerRol.cNombre = data.name;
-                  this.fillVerRol.cUrl = data.slug;
+                  this.fillVerRol.cSlug = data.slug;
                   //obtener los permisos de los roles seleccionado
                   this.getListarPermisoByRol(data.id);
                 }

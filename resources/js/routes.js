@@ -66,6 +66,10 @@ export default new Router({
         {
             path: "/permiso",
             component: require("./components/modules/permiso/index").default
+        },
+        {
+            path: "/permiso/crear",
+            component: require("./components/modules/permiso/create").default
         }
     ],
     mode: "history",
