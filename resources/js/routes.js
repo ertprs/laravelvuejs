@@ -70,7 +70,13 @@ export default new Router({
         {
             path: "/permiso/crear",
             component: require("./components/modules/permiso/create").default
-        }
+        },
+        {
+            path: "/permiso/editar/:id",
+            name: "permiso.editar",
+            props: true,
+            component: require("./components/modules/permiso/edit").default
+        },
     ],
     mode: "history",
     linkActiveClass: "active"

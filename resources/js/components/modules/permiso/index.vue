@@ -78,16 +78,7 @@
                         <td v-text="item.name"></td>
                         <td v-text="item.slug"></td>
                         <td>
-                          <template v-if="item.state == 'A'">
-                            <span class="badge badge-success" v-text="item.state_alias"></span> 
-                          </template> 
-                          <template v-else>
-                             <span class="badge badge-danger" v-text="item.state_alias"></span> 
-                          </template>
-                        </td>
-                        <td>
-                        
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'rol.editar', params:{id: item.id}}">
+                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'permiso.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
                           </router-link>
                         </td>
