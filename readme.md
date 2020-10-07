@@ -4,11 +4,11 @@ _Administrador de usuarios, roles, permisos, chat entre usuarios y usuarios loge
 
 ## Comenzando 🚀
 
-###Clona este repositorio 😎
+### Clona este repositorio 😎
+
+https://github.com/jtavio/laravelvuejs.git
 
 
-
-
-##Abre el proyecto en una terminal y realiza lo siguiente:
+## Abre el proyecto en una terminal y realiza lo siguiente:
 
 composer install
