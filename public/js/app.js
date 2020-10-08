@@ -5070,6 +5070,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5080,8 +5096,10 @@ __webpack_require__.r(__webpack_exports__);
         cUsuario: '',
         cCorreo: '',
         cContrasena: '',
-        oFotografia: ''
+        oFotografia: '',
+        nIdRol: ''
       },
+      listRoles: [],
       form: new FormData(),
       fullscreenLoading: false,
       modalShow: false,
@@ -5097,6 +5115,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {},
+  mounted: function mounted() {
+    this.getListarRoles();
+  },
   methods: {
     limpiarCriterios: function limpiarCriterios() {
       this.fillCrearUsuario.cPrimerNombre = '';
@@ -5109,6 +5130,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     abrirModal: function abrirModal() {
       this.modalShow = !this.modalShow;
+    },
+    getListarRoles: function getListarRoles() {
+      var _this = this;
+
+      this.fullscreenLoading = true;
+      var url = '/administracion/rol/getListarRoles';
+      axios.get(url).then(function (response) {
+        console.log(response.data);
+        _this.listRoles = response.data;
+        _this.fullscreenLoading = false;
+      });
     },
     getFile: function getFile(e) {
       this.fillCrearUsuario.oFotografia = e.target.files[0];
@@ -5128,7 +5160,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     setRegistrarArchivo: function setRegistrarArchivo() {
-      var _this = this;
+      var _this2 = this;
 
       this.form.append('file', this.fillCrearUsuario.oFotografia);
       var config = {
@@ -5140,11 +5172,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(url, this.form, config).then(function (response) {
         var nIdFile = response.data[0].nIdFile;
 
-        _this.setGuardarUsuario(nIdFile);
+        _this2.setGuardarUsuario(nIdFile);
       });
     },
     setGuardarUsuario: function setGuardarUsuario(nIdFile) {
-      var _this2 = this;
+      var _this3 = this;
 
       debugger;
       console.log(nIdFile);
@@ -5158,10 +5190,23 @@ __webpack_require__.r(__webpack_exports__);
         cContrasena: this.fillCrearUsuario.cContrasena,
         oFotografia: nIdFile
       }).then(function (response) {
-        console.log('Registro de usuario exitosamente');
-        _this2.fullscreenLoading = false;
+        console.log(response.data);
 
-        _this2.$router.push('/usuario');
+        _this3.setEditarRolByUsuario(response.data);
+      });
+    },
+    setEditarRolByUsuario: function setEditarRolByUsuario(nIdUsuario) {
+      var _this4 = this;
+
+      var url = '/administracion/usuario/setEditarRolByUsuario';
+      axios.post(url, {
+        'nIdUsuario': nIdUsuario,
+        'nIdRol': this.fillCrearUsuario.nIdRol
+      }).then(function (response) {
+        console.log('Registro de usuario exitosamente');
+        _this4.fullscreenLoading = false;
+
+        _this4.$router.push('/usuario');
       });
     },
     validarRegistarUsuario: function validarRegistarUsuario() {
@@ -109513,6 +109558,54 @@ var render = function() {
                             staticClass: "col-md-3 col-form-label",
                             attrs: { for: "" }
                           },
+                          [_vm._v("Rol")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-9" },
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                attrs: {
+                                  placeholder: "Selecciona un rol",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value: _vm.fillCrearUsuario.nIdRol,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.fillCrearUsuario,
+                                      "nIdRol",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "fillCrearUsuario.nIdRol"
+                                }
+                              },
+                              _vm._l(_vm.listRoles, function(item) {
+                                return _c("el-option", {
+                                  key: item.id,
+                                  attrs: { label: item.name, value: item.id }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-md-3 col-form-label",
+                            attrs: { for: "" }
+                          },
                           [_vm._v("Fotografia")]
                         ),
                         _vm._v(" "),
@@ -127924,15 +128017,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./resources/js/components/modules/permiso/edit.vue ***!
   \**********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _edit_vue_vue_type_template_id_e65b0ed2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=e65b0ed2& */ "./resources/js/components/modules/permiso/edit.vue?vue&type=template&id=e65b0ed2&");
 /* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/permiso/edit.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -127962,7 +128054,7 @@ component.options.__file = "resources/js/components/modules/permiso/edit.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/modules/permiso/edit.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
