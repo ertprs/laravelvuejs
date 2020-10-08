@@ -189,8 +189,6 @@ export default {
       this.fullscreenLoading = true;
       var url = '/administracion/rol/getListarRoles';
       axios.get(url).then(response => {
-        
-        console.log(response.data)
         this.listRoles = response.data
         this.fullscreenLoading = false;
       })
@@ -222,8 +220,6 @@ export default {
           })
       },
       setGuardarUsuario(nIdFile){
-        debugger
-        console.log(nIdFile);
         var url = '/administracion/usuario/setRegistrarUsuario';
         axios.post(url,{
           cPrimerNombre : this.fillCrearUsuario.cPrimerNombre,
@@ -234,7 +230,6 @@ export default {
           cContrasena   : this.fillCrearUsuario.cContrasena,
           oFotografia   : nIdFile
         }).then(response => {
-          console.log(response.data)
           this.setEditarRolByUsuario(response.data);
         })
       },
@@ -269,6 +264,9 @@ export default {
           }
           if(!this.fillCrearUsuario.cContrasena){
               this.mensajeError.push("La contraseña es un campo obligatorio")
+          }
+          if (!this.fillEditarUsuario.nIdRol) {
+            this.mensajeError.push("Debe seleccionar el Rol, es un campo obligatorio");
           }
           if(this.mensajeError.length){
               this.error = 1;

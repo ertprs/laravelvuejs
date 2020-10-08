@@ -5137,7 +5137,6 @@ __webpack_require__.r(__webpack_exports__);
       this.fullscreenLoading = true;
       var url = '/administracion/rol/getListarRoles';
       axios.get(url).then(function (response) {
-        console.log(response.data);
         _this.listRoles = response.data;
         _this.fullscreenLoading = false;
       });
@@ -5178,8 +5177,6 @@ __webpack_require__.r(__webpack_exports__);
     setGuardarUsuario: function setGuardarUsuario(nIdFile) {
       var _this3 = this;
 
-      debugger;
-      console.log(nIdFile);
       var url = '/administracion/usuario/setRegistrarUsuario';
       axios.post(url, {
         cPrimerNombre: this.fillCrearUsuario.cPrimerNombre,
@@ -5190,8 +5187,6 @@ __webpack_require__.r(__webpack_exports__);
         cContrasena: this.fillCrearUsuario.cContrasena,
         oFotografia: nIdFile
       }).then(function (response) {
-        console.log(response.data);
-
         _this3.setEditarRolByUsuario(response.data);
       });
     },
@@ -5231,6 +5226,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.fillCrearUsuario.cContrasena) {
         this.mensajeError.push("La contraseña es un campo obligatorio");
+      }
+
+      if (!this.fillEditarUsuario.nIdRol) {
+        this.mensajeError.push("Debe seleccionar el Rol, es un campo obligatorio");
       }
 
       if (this.mensajeError.length) {
@@ -5422,6 +5421,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5433,8 +5447,10 @@ __webpack_require__.r(__webpack_exports__);
         cUsuario: "",
         cCorreo: "",
         cContrasena: "",
-        oFotografia: ""
+        oFotografia: "",
+        nIdRol: ''
       },
+      listRoles: [],
       form: new FormData(),
       fullscreenLoading: false,
       modalShow: false,
@@ -5451,6 +5467,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getUsuarioById();
+    this.getListarRoles();
   },
   methods: {
     getUsuarioById: function getUsuarioById() {
@@ -5484,6 +5501,30 @@ __webpack_require__.r(__webpack_exports__);
     abrirModal: function abrirModal() {
       this.modalShow = !this.modalShow;
     },
+    getListarRoles: function getListarRoles() {
+      var _this2 = this;
+
+      this.fullscreenLoading = true;
+      var url = '/administracion/rol/getListarRoles';
+      axios.get(url).then(function (response) {
+        _this2.listRoles = response.data;
+
+        _this2.getRolByUsuario();
+      });
+    },
+    getRolByUsuario: function getRolByUsuario() {
+      var _this3 = this;
+
+      var url = '/administracion/usuario/getRolByUsuario';
+      axios.get(url, {
+        params: {
+          'nIdUsuario': this.fillEditarUsuario.nIdUsuario
+        }
+      }).then(function (response) {
+        _this3.fillEditarUsuario.nIdRol = response.data.length == 0 ? '' : response.data[0].nIdRol;
+        _this3.fullscreenLoading = false;
+      });
+    },
     getFile: function getFile(e) {
       this.fillEditarUsuario.oFotografia = e.target.files[0];
     },
@@ -5502,7 +5543,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     setRegistrarArchivo: function setRegistrarArchivo() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.form.append("file", this.fillEditarUsuario.oFotografia);
       var config = {
@@ -5514,11 +5555,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(url, this.form, config).then(function (response) {
         var nIdFile = response.data[0].nIdFile;
 
-        _this2.setGuardarUsuario(nIdFile);
+        _this4.setGuardarUsuario(nIdFile);
       });
     },
     setGuardarUsuario: function setGuardarUsuario(nIdFile) {
-      var _this3 = this;
+      var _this5 = this;
 
       debugger;
       console.log(nIdFile);
@@ -5533,8 +5574,19 @@ __webpack_require__.r(__webpack_exports__);
         'cContrasena': this.fillEditarUsuario.cContrasena,
         'oFotografia': nIdFile
       }).then(function (response) {
-        conosole.log(response);
-        _this3.fullscreenLoading = false;
+        _this5.setEditarRolByUsuario();
+      });
+    },
+    setEditarRolByUsuario: function setEditarRolByUsuario() {
+      var _this6 = this;
+
+      var url = '/administracion/usuario/setEditarRolByUsuario';
+      axios.post(url, {
+        'nIdUsuario': this.fillEditarUsuario.nIdUsuario,
+        'nIdRol': this.fillEditarUsuario.nIdRol
+      }).then(function (response) {
+        console.log('Registro de usuario exitosamente');
+        _this6.fullscreenLoading = false;
         Swal.fire({
           icon: 'success',
           title: 'Se actualizo el usuario correctamente',
@@ -5561,6 +5613,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.fillEditarUsuario.cCorreo) {
         this.mensajeError.push("El correo es un campo obligatorio");
+      }
+
+      if (!this.fillEditarUsuario.nIdRol) {
+        this.mensajeError.push("Debe seleccionar el Rol, es un campo obligatorio");
       }
 
       if (this.mensajeError.length) {
@@ -110157,6 +110213,54 @@ var render = function() {
                             staticClass: "col-md-3 col-form-label",
                             attrs: { for: "" }
                           },
+                          [_vm._v("Rol")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-9" },
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                attrs: {
+                                  placeholder: "Selecciona un rol",
+                                  clearable: ""
+                                },
+                                model: {
+                                  value: _vm.fillEditarUsuario.nIdRol,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.fillEditarUsuario,
+                                      "nIdRol",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "fillEditarUsuario.nIdRol"
+                                }
+                              },
+                              _vm._l(_vm.listRoles, function(item) {
+                                return _c("el-option", {
+                                  key: item.id,
+                                  attrs: { label: item.name, value: item.id }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-md-3 col-form-label",
+                            attrs: { for: "" }
+                          },
                           [_vm._v("Fotografia")]
                         ),
                         _vm._v(" "),
@@ -110792,7 +110896,12 @@ var render = function() {
                                               {
                                                 staticClass:
                                                   "btn btn-flat btn-success btn-sm",
-                                                attrs: { to: "/" }
+                                                attrs: {
+                                                  to: {
+                                                    name: "usuario.permiso",
+                                                    params: { id: item.id }
+                                                  }
+                                                }
                                               },
                                               [
                                                 _c("i", {
@@ -128703,6 +128812,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/modules/usuario/permission.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/modules/usuario/permission.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/components/modules/usuario/permission.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/modules/usuario/view.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/modules/usuario/view.vue ***!
@@ -129042,6 +129183,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     name: "usuario.ver",
     props: true,
     component: __webpack_require__(/*! ./components/modules/usuario/view */ "./resources/js/components/modules/usuario/view.vue")["default"]
+  }, {
+    path: "/usuario/permiso/:id",
+    name: "usuario.permiso",
+    props: true,
+    component: __webpack_require__(/*! ./components/modules/usuario/permission */ "./resources/js/components/modules/usuario/permission.vue")["default"]
   }, {
     path: "/permiso",
     component: __webpack_require__(/*! ./components/modules/permiso/index */ "./resources/js/components/modules/permiso/index.vue")["default"]
