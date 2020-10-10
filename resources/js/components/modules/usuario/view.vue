@@ -27,7 +27,7 @@
                 </template>
               </div>
               <h3 class="profile-username text-center">{{cNombreCompleto}}</h3>
-              <p class="text-muted text-center">Vendedor</p>
+              <p class="text-muted text-center">{{fillVerUsuario.cNombreRol}}</p>
             </div>
             <!-- /.card-body -->
           </div>
@@ -216,7 +216,8 @@ export default {
         cCorreo: "",
         cContrasena: "",
         oFotografia: "",
-        cRutaArchivo: ""
+        cRutaArchivo: "",
+        cNombreRol:""
       },
       form: new FormData(),
       fullscreenLoading: false,
@@ -232,8 +233,9 @@ export default {
       mensajeError: [],
     };
   },
-    mounted() {
+  mounted() {
     this.getUsuarioById();
+    this.getRolByUsuario();
   },
     computed:{
         cNombreCompleto(){
@@ -272,6 +274,17 @@ export default {
           this.fillVerUsuario.cUsuario       =   data.username;
           this.fillVerUsuario.cCorreo        =   data.email;
           this.fillVerUsuario.cRutaArchivo   =   data.profile_image;
+    },
+    getRolByUsuario(){
+      var url = '/administracion/usuario/getRolByUsuario';
+      axios.get(url,{
+        params:{
+          'nIdUsuario' : this.fillEditarUsuario.nIdUsuario
+        }
+      }).then(response => {
+        this.fillVerUsuario.cNombreRol = (response.data.length == 0) ? '': response.data[0].name ;
+        this.fullscreenLoading = false;
+      })
     },
     abrirModal() {
       this.modalShow = !this.modalShow;
@@ -319,7 +332,14 @@ export default {
           'oFotografia'     : nIdFile,
         })
         .then((response) => {
-          
+          this.getRefrescarUsuarioAuthenticado();
+         
+        });
+    },
+    getRefrescarUsuarioAuthenticado(){
+        var url= '/authenticate/getRefrescarUsuarioAutenticado';
+        axios.get(url).then(response => {
+          EventBus.$emit('verifyAuthenticatedUser', response.data);
           this.fullscreenLoading = false;
           this.getUsuarioById();
           Swal.fire({
@@ -327,7 +347,7 @@ export default {
             title: 'Se actualizo el usuario correctamente',
             showConfirmButton: false,
             timer: 1500
-            })
+          })
         });
     },
     validarRegistarUsuario() {

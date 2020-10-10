@@ -3,7 +3,11 @@
     @include('sections.head')
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
-    <app-component ruta="{{route('basepath')}}"></app-component>
+    @if (Auth::check())
+    <app-component ruta="{{route('basepath')}}" :usuario="{{Auth::user()->load('file')}}"></app-component>
+    @else
+    <auth-component ruta="{{route('basepath')}}"></auth-component>
+    @endif
 
 </div>
 <!-- ./wrapper -->

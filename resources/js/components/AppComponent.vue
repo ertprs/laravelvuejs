@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar :ruta="ruta"></Navbar>
-    <Sidebar :ruta="ruta"></Sidebar>
+    <Sidebar :ruta="ruta" :usuario="authUser"></Sidebar>
     <div class="content-wrapper">
       <transition name="slide-fade" mode="out-in">
          <router-view></router-view>
@@ -22,8 +22,19 @@ import Navbar from './plantilla/Navbar'
 import Sidebar from './plantilla/Sidebar'
 import Footer from './plantilla/Footer'
 export default {
-  props: ['ruta'],
-  components:{Navbar,Sidebar, Footer}
+  props: ['ruta', 'usuario'],
+  components:{Navbar,Sidebar, Footer},
+  data(){
+    return{
+      authUser: this.usuario
+    }
+  },
+  mounted(){
+    EventBus.$on('verifyAuthenticatedUser', data => {
+        console.log("Evento ejecutado desde el Componente App.vue")
+        this.authUser = data;
+    });
+  },
 }
 </script>
 

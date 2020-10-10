@@ -222,13 +222,13 @@ export default {
       setGuardarUsuario(nIdFile){
         var url = '/administracion/usuario/setRegistrarUsuario';
         axios.post(url,{
-          cPrimerNombre : this.fillCrearUsuario.cPrimerNombre,
-          cSegundoNombre: this.fillCrearUsuario.cSegundoNombre,
-          cApellido     : this.fillCrearUsuario.cApellido,
-          cUsuario      : this.fillCrearUsuario.cUsuario,
-          cCorreo       : this.fillCrearUsuario.cCorreo,
-          cContrasena   : this.fillCrearUsuario.cContrasena,
-          oFotografia   : nIdFile
+          'cPrimerNombre' : this.fillCrearUsuario.cPrimerNombre,
+          'cSegundoNombre': this.fillCrearUsuario.cSegundoNombre,
+          'cApellido'     : this.fillCrearUsuario.cApellido,
+          'cUsuario'      : this.fillCrearUsuario.cUsuario,
+          'cCorreo'       : this.fillCrearUsuario.cCorreo,
+          'cContrasena'   : this.fillCrearUsuario.cContrasena,
+          'oFotografia'   : nIdFile
         }).then(response => {
           this.setEditarRolByUsuario(response.data);
         })
@@ -265,7 +265,7 @@ export default {
           if(!this.fillCrearUsuario.cContrasena){
               this.mensajeError.push("La contraseña es un campo obligatorio")
           }
-          if (!this.fillEditarUsuario.nIdRol) {
+          if (!this.fillCrearUsuario.nIdRol) {
             this.mensajeError.push("Debe seleccionar el Rol, es un campo obligatorio");
           }
           if(this.mensajeError.length){

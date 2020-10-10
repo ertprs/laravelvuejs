@@ -11,7 +11,11 @@
 |
 */
 
-
+Route::post('/authenticate/login', 'Auth\LoginController@Login');
+Route::post('/authenticate/logout', 'Auth\LoginController@Logout');
+Route::get('/authenticate/getRefrescarUsuarioAutenticado', function(){
+    return Auth::user()->load('file');
+});
 
 Route::get('/administracion/usuario/getListarUsuarios', 'Administracion\UsersController@getListarUsuarios');
 Route::post('/administracion/usuario/setRegistrarUsuario', 'Administracion\UsersController@setRegistrarUsuario');
