@@ -202,4 +202,16 @@ class UsersController extends Controller
             DB::rollBack();
         }
     }
+    public function getListarRolPermisosByUsuario(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $nIdUsuario     = $request->nIdUsuario;
+        
+        $nIdUsuario    = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
+
+        $rpta = DB::select('call sp_Usuario_getListarRolPermisosByUsuario (?)', [
+            $nIdUsuario
+        ]);
+        return $rpta;
+    }
 }

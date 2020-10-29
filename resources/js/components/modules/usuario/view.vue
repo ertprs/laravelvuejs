@@ -339,6 +339,7 @@ export default {
     getRefrescarUsuarioAuthenticado(){
         var url= '/authenticate/getRefrescarUsuarioAutenticado';
         axios.get(url).then(response => {
+          //alias y data 
           EventBus.$emit('verifyAuthenticatedUser', response.data);
           this.fullscreenLoading = false;
           this.getUsuarioById();

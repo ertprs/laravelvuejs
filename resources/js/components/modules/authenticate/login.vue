@@ -65,7 +65,9 @@ export default {
             },
             fullscreenLoading:false,
             error:0,
-            mensajeError:[]
+            mensajeError:[],
+            listRolPermisosByUsuario:[],
+            listRolPermisosByUsuarioFilter:[]
         }
     },
     methods:{
@@ -85,11 +87,30 @@ export default {
                     this.loginFailed();
                 }
                 if(response.data.code == 200){
-                    this.loginSuccess();
+                    this.getListarRolPermisosByUsuario(response.data.authUser.id)
                 }
                 this.fullscreenLoading = false;
             })
         },
+         getListarRolPermisosByUsuario(id){
+          var ruta = '/administracion/usuario/getListarRolPermisosByUsuario'
+          axios.get(ruta,{
+        params:{
+          'nIdUsuario' : id
+        }
+      }).then(response => {
+              this.listRolPermisosByUsuario = response.data;
+              this.filterListarRolPermisosByUsuario();
+          })
+      },
+      filterListarRolPermisosByUsuario(){
+          let me = this;
+          me.listRolPermisosByUsuario.map(function(x , y) {
+              me.listRolPermisosByUsuarioFilter.push( x.slug)
+          })
+          sessionStorage.setItem('listRolPermisosByUsuario', JSON.stringify(me.listRolPermisosByUsuarioFilter));
+          this.loginSuccess();
+      },
         validarLogin(){
             this.error = 0;
             this.mensajeError = [];

@@ -119,7 +119,7 @@ export default {
       var url = '/administracion/permiso/getListarPermisos';
       axios.get(url, {
         params:{
-        'nIdPermisos': this.fillEditarPermiso.nIdPermiso
+        'nIdPermiso': this.fillEditarPermiso.nIdPermiso
          
         }
       })

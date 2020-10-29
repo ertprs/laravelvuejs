@@ -73,7 +73,7 @@ export default new Router({
             component: require("./components/modules/usuario/edit").default
         },
         {
-            path: "/usuario/ver:id",
+            path: "/usuario/ver/:id",
             name: "usuario.ver",
             props: true,
             component: require("./components/modules/usuario/view").default

@@ -56,7 +56,7 @@
                         <div class="card-footer">
                       
                           <div class="col-md-4 offset-4">
-                            <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarPermisosByUsuario"  v-loading.fullscreen.lock="fullscreenLoading">Registrar</button>
+                            <button class="btn btn-flat btn-info btnFull" @click.prevent="setRegistrarPermisosByUsuario"  v-loading.fullscreen.lock="fullscreenLoading">Registrar</button>
                           
                           </div>
                  

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar :ruta="ruta"></Navbar>
-    <Sidebar :ruta="ruta" :usuario="authUser"></Sidebar>
+    <Sidebar :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"></Sidebar>
     <div class="content-wrapper">
       <transition name="slide-fade" mode="out-in">
          <router-view></router-view>
@@ -26,10 +26,13 @@ export default {
   components:{Navbar,Sidebar, Footer},
   data(){
     return{
-      authUser: this.usuario
+      authUser: this.usuario,
+      listRolPermisosByUsuario: []
     }
   },
   mounted(){
+    //console.log(JSON.parse(sessionStorage.getItem('listRolPermisosByUsuario')));
+    this.listRolPermisosByUsuario = JSON.parse(sessionStorage.getItem('listRolPermisosByUsuario'));
     EventBus.$on('verifyAuthenticatedUser', data => {
         console.log("Evento ejecutado desde el Componente App.vue")
         this.authUser = data;
